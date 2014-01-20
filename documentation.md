@@ -24,7 +24,7 @@ Gray-colored components (GUI and File Manager Extension) are native operating sy
 
 The specific `<transport>` used depends on the operating system where the application is running: Unix sockets on Linux and OS X, and Windows named pipes on Windows.
 
-A CLI Python-based reference implementation is provided in [MEO Cloud CLI Repository](http://127.0.0.1) and may be used to create a working GUI. Communication between the core and the UI is implemented in the `client/linux/daemon` directory.
+A CLI Python-based reference implementation is provided in [MEO Cloud CLI Repository](https://github.com/sapo/meocloud-cli) and may be used to create a working GUI. Communication between the core and the UI is implemented in the `client/linux/daemon` directory.
 
 Runtime Interactions
 ====================
