@@ -24,7 +24,7 @@ NOTIFICATIONS = {
         '251_title': 'Shared Folder Deleted',
         '251_description': 'Shared folder "{0}" was deleted from your MEO Cloud folder',
         '252_title': 'Shared Folder Unshared',
-        '252_description': 'Stoped sharing folder "{0}"',
+        '252_description': 'Stopped sharing folder "{0}"',
 
         '500_title': 'Quota Exceeded',
         '500_description': 'You have exceeded your MEO Cloud quota. Please free more space to continue uploading.',
@@ -34,6 +34,8 @@ NOTIFICATIONS = {
         '502_description': 'Could not update "{0}". Please ensure that you have sufficient free disk space.',
         '503_title': 'File "{0}" is in use',
         '503_description': 'File "{0}" is in use. Please ensure that the file is not open by another application.',
+        '504_title': 'Cannot watch filesystem',
+        '504_description': 'Cannot watch filesystem. Please run \'sudo sysctl -w fs.inotify.max_user_watches=100000\' and restart MEO Cloud to fix the problem.',
     },
     'pt': {
         '200_title': 'Ficheiro Adicionado',
@@ -68,5 +70,7 @@ NOTIFICATIONS = {
         '502_description': 'Não foi possível actualizar "{0}". Por favor verfique o espaço livre do seu disco.',
         '503_title': 'O ficheiro "{0}" está em uso',
         '503_description': 'O ficheiro "{0}" está em uso. Por favor verifique se o ficheiro está aberto em alguma aplicação.',
+        '504_title': 'Não é possível monitorizar ficheiros',
+        '504_description': 'Não é possível monitorizar ficheiros. Para resolver o problema, por favor execute o comando \'sudo sysctl -w fs.inotify.max_user_watches=100000\' e reinice a aplicação.',
     },
 }

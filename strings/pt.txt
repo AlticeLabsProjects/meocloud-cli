@@ -33,3 +33,5 @@
 "502_description" = "Não foi possível actualizar \"%S\". Por favor verfique o espaço livre do seu disco."
 "503_title" = "O ficheiro \"%S\" está em uso"
 "503_description" = "O ficheiro \"%S\" está em uso. Por favor verifique se o ficheiro está aberto em alguma aplicação."
+"504_title" = "Não é possível monitorizar ficheiros"
+"504_description" = "Não é possível monitorizar ficheiros. Para resolver o problema, por favor execute o comando 'sudo sysctl -w fs.inotify.max_user_watches=100000' e reinice a aplicação."

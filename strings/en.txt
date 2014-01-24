@@ -22,7 +22,7 @@
 "251_title" = "Shared Folder Deleted"
 "251_description" = "Shared folder \"%S\" was deleted from your APP_NAME folder"
 "252_title" = "Shared Folder Unshared"
-"252_description" = "Stoped sharing folder \"%S\""
+"252_description" = "Stopped sharing folder \"%S\""
 
 # Errors
 "500_title" = "Quota Exceeded"
@@ -33,3 +33,5 @@
 "502_description" = "Could not update \"%S\". Please ensure that you have sufficient free disk space."
 "503_title" = "File \"%S\" is in use"
 "503_description" = "File \"%S\" is in use. Please ensure that the file is not open by another application."
+"504_title" = "Cannot watch filesystem"
+"504_description" = "Cannot watch filesystem. Please run 'sudo sysctl -w fs.inotify.max_user_watches=100000' and restart APP_NAME to fix the problem."
