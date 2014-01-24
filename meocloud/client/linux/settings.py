@@ -1,6 +1,6 @@
 import os
 
-VERSION = '0.1.13'
+VERSION = '0.1.14'
 
 RC4_KEY = '8025c571541a64bccd00135f87dec11a83a8c5de69c94ec6b642dbdc6a2aebdd'
 
