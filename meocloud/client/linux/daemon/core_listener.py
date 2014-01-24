@@ -123,6 +123,10 @@ class CoreListenerHandler(UI.Iface):
                         pass
                     elif error_code == codes.ERROR_THREAD_CRASH:
                         pass
+                    elif error_code == codes.ERROR_CANNOT_WATCH_FS:
+                        log.warning('CoreListener: Cannot watch filesystem, will now shutdown')
+                        self.ui_config.set('dying_message', DYING_MESSAGES['cannot_watch_fs'])
+                        Events.shutdown_required.set()
                     else:
                         log.error('CoreListener: Got unknown error code: {0}'.format(error_code))
                         assert False
