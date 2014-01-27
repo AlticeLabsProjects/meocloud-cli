@@ -1,6 +1,5 @@
+from meocloud.client.linux.utils import get_own_dir
 import os
-
-VERSION = '0.1.14'
 
 RC4_KEY = '8025c571541a64bccd00135f87dec11a83a8c5de69c94ec6b642dbdc6a2aebdd'
 
@@ -48,3 +47,16 @@ CORE_WATCHDOG_PERIOD = 20
 DAEMON_VERSION_CHECKER_PERIOD = 3600
 
 DEFAULT_NOTIFS_TAIL_LINES = 10
+
+
+def _get_current_version():
+    if not DEV_MODE:
+        own_dir = get_own_dir(__file__)
+        version_path = os.path.join(own_dir, 'VERSION')
+        with open(version_path) as f:
+            current_version = f.read().strip()
+    else:
+        current_version = '0.0.0 dev'
+    return current_version
+
+VERSION = _get_current_version()
