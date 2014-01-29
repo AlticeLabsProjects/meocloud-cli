@@ -15,6 +15,9 @@ sudo -k
 
 # add sapo repository to apt
 sudo sh -c "$URL_FETCHER_COMMAND http://repos.sapo.pt/deb/sapo.list > /etc/apt/sources.list.d/sapo.list"
+if [ "$1" = "beta" ]; then
+    sudo sed -i 's/stable/beta/g' /etc/apt/sources.list.d/sapo.list
+fi
 
 # verify and install sapo repository's GPG key for package verification
 TMPKEY=`mktemp`

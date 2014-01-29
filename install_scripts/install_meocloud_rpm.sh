@@ -15,6 +15,9 @@ sudo -k
 
 # add sapo repository to yum
 sudo sh -c "$URL_FETCHER_COMMAND http://repos.sapo.pt/rpm/sapo.repo > /etc/yum.repos.d/sapo.repo"
+if [ "$1" = "beta" ]; then
+    sudo sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/sapo.repo
+fi
 
 # verify and install sapo repository's GPG key for package verification
 TMPKEY=`mktemp`
