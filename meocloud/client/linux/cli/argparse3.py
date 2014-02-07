@@ -160,7 +160,9 @@ class HelpFormatter(object):
                 width = int(_os.environ['COLUMNS'])
             except (KeyError, ValueError):
                 try:
-                    width = int(_os.popen('stty size 2>&1 > /dev/null', 'r').read().split()[1])
+                    from subprocess import check_output
+                    with open(_os.devnull, 'w') as devnull:
+                        width = int(check_output('stty size', stderr=devnull, shell=True).split()[1])
                 except Exception:
                     width = 80
             width -= 2
