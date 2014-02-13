@@ -84,13 +84,13 @@ def set_proxy(ui_config, proxy_url):
     set_config_value(ui_config, 'proxy_url', proxy_url)
 
 
-def get_bwlimits(ui_config):
+def get_ratelimits(ui_config):
     download_limit = ui_config.get('download_limit') or 0
     upload_limit = ui_config.get('upload_limit') or 0
     return download_limit, upload_limit
 
 
-def set_bwlimits(ui_config, download_limit, upload_limit):
+def set_ratelimits(ui_config, download_limit, upload_limit):
     set_config_value(ui_config, 'download_limit', download_limit)
     set_config_value(ui_config, 'upload_limit', upload_limit)
 

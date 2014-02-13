@@ -15,7 +15,7 @@ from meocloud.client.linux.settings import (LOGGER_NAME, VERSION, CORE_BINARY_FI
                                             NOTIFICATIONS_LOG_PATH, PURGEMETA_PATH)
 from meocloud.client.linux.exceptions import (CoreOfflineException, AlreadyRunningException,
                                               ListenerConnectionFailedException, TimeoutException)
-from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_proxy, set_proxy, get_bwlimits, set_bwlimits
+from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_proxy, set_proxy, get_ratelimits, set_ratelimits
 from meocloud.client.linux.decorators import retry, RetryFailed, TooManyRetries
 from meocloud.client.linux.db import UIConfig
 
@@ -547,18 +547,21 @@ class CLIHandler(object):
         return True
 
     @exceptions_handled
-    def bwlimit(self, up_or_down, limit):
-        log.debug('CLIHandler.bwlimit()')
-        download_limit, upload_limit = get_bwlimits(self.ui_config)
-        if up_or_down is not None:
-            if up_or_down == 'up':
+    def ratelimit(self, direction, limit):
+        log.debug('CLIHandler.ratelimit()')
+        download_limit, upload_limit = get_ratelimits(self.ui_config)
+        if direction is not None:
+            if limit > 1000000:
+                self.out('Limit cannot exceed 1000000 KB/s (1 GB/s).')
+                return False
+            if direction == 'up':
                 upload_limit = limit
-            elif up_or_down == 'down':
+            elif direction == 'down':
                 download_limit = limit
             else:
                 self.out('First parameter must be \'up\' or \'down\'.')
                 return False
-            set_bwlimits(self.ui_config, download_limit, upload_limit)
+            set_ratelimits(self.ui_config, download_limit, upload_limit)
             if self._daemon_already_running():
                 self.daemon_client.networkSettingsChanged()
         if upload_limit == 0:

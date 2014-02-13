@@ -105,10 +105,10 @@ def main():
                                                                    '(found in the http_proxy or https_proxy environment variables).')
             proxy_parser.set_defaults(func=cli_handler.proxy)
 
-            bwlimit_parser = subparsers.add_parser('ratelimit', help='Get or set bandwidth limits')
-            bwlimit_parser.add_argument('direction', nargs='?', help='Use \'up\' or \'down\' to set the upload or download rate. If not present, show the current rate limits.')
-            bwlimit_parser.add_argument('limit', nargs='?', type=int, default=0, help='Rate limit in kB/s. If not present, remove rate limit.')
-            bwlimit_parser.set_defaults(func=cli_handler.bwlimit)
+            ratelimit_parser = subparsers.add_parser('ratelimit', help='Get or set bandwidth limits')
+            ratelimit_parser.add_argument('direction', nargs='?', help='Use \'up\' or \'down\' to set the upload or download rate. If not present, show the current rate limits.')
+            ratelimit_parser.add_argument('limit', nargs='?', type=int, default=0, help='Rate limit in kB/s. If not present, remove rate limit.')
+            ratelimit_parser.set_defaults(func=cli_handler.ratelimit)
 
             pause_parser = subparsers.add_parser('pause', help='Pause MEO Cloud')
             pause_parser.set_defaults(func=cli_handler.pause)

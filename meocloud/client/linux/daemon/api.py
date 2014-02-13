@@ -2,7 +2,7 @@ import urlparse
 from meocloud.client.linux.protocol.daemon_core.ttypes import NetworkSettings, Account
 from meocloud.client.linux.settings import RC4_KEY
 from meocloud.client.linux.daemon import rc4
-from meocloud.client.linux.utils import get_proxy, get_bwlimits
+from meocloud.client.linux.utils import get_proxy, get_ratelimits
 
 
 def unlink(core_client, ui_config):
@@ -23,7 +23,7 @@ def unlink(core_client, ui_config):
 def get_network_settings(ui_config):
     network_settings = NetworkSettings()
 
-    download_limit, upload_limit = get_bwlimits(ui_config)
+    download_limit, upload_limit = get_ratelimits(ui_config)
     network_settings.downloadBandwidth = download_limit * 1024  # KB/s to B/s
     network_settings.uploadBandwidth = upload_limit * 1024  # KB/s to B/s
 
