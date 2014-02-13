@@ -1621,7 +1621,7 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
 
         add_group = self.add_argument_group
         if prog == 'meocloud':
-            self._positionals = add_group(_('Available subcommands'))
+            self._positionals = add_group(_('Available subcommands (add -h to each subcommand to see its help)'))
         else:
             self._positionals = add_group(_('positional arguments'))
         self._optionals = add_group(_('optional arguments'))
