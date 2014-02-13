@@ -151,4 +151,4 @@ class CoreListenerHandler(UI.Iface):
 
     def networkSettings(self):
         log.debug('CoreListener.networkSettings() <<<<')
-        return api.get_network_settings_for_core(self.ui_config)
+        return api.get_network_settings(self.ui_config)

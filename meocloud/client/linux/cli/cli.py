@@ -99,11 +99,16 @@ def main():
             sync_parser.add_argument('path')
             sync_parser.set_defaults(func=cli_handler.add_sync)
 
-            proxy_parser = subparsers.add_parser('proxy', help='Get or set current proxy')
-            proxy_parser.add_argument('proxy_url', nargs='?', default=None, help='If present, use this value as the proxy; if not present, show the current proxy. '
-                                                                                 'If the value is \'default\', use the system proxy '
-                                                                                 '(found in the http_proxy or https_proxy environment variables).')
+            proxy_parser = subparsers.add_parser('proxy', help='Get or set proxy')
+            proxy_parser.add_argument('proxy_url', nargs='?', help='If present, use this value as the proxy; if not present, show the current proxy. '
+                                                                   'If the value is \'default\', use the system proxy '
+                                                                   '(found in the http_proxy or https_proxy environment variables).')
             proxy_parser.set_defaults(func=cli_handler.proxy)
+
+            bwlimit_parser = subparsers.add_parser('ratelimit', help='Get or set bandwidth limits')
+            bwlimit_parser.add_argument('direction', nargs='?', help='Use \'up\' or \'down\' to set the upload or download rate. If not present, show the current rate limits.')
+            bwlimit_parser.add_argument('limit', nargs='?', type=int, default=0, help='Rate limit in kB/s. If not present, remove rate limit.')
+            bwlimit_parser.set_defaults(func=cli_handler.bwlimit)
 
             pause_parser = subparsers.add_parser('pause', help='Pause MEO Cloud')
             pause_parser.set_defaults(func=cli_handler.pause)

@@ -15,7 +15,7 @@ from meocloud.client.linux.settings import (LOGGER_NAME, VERSION, CORE_BINARY_FI
                                             NOTIFICATIONS_LOG_PATH, PURGEMETA_PATH)
 from meocloud.client.linux.exceptions import (CoreOfflineException, AlreadyRunningException,
                                               ListenerConnectionFailedException, TimeoutException)
-from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_network_settings, set_network_settings
+from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_proxy, set_proxy, get_bwlimits, set_bwlimits
 from meocloud.client.linux.decorators import retry, RetryFailed, TooManyRetries
 from meocloud.client.linux.db import UIConfig
 
@@ -527,23 +527,48 @@ class CLIHandler(object):
     def proxy(self, proxy_url):
         log.debug('CLIHandler.proxy()')
         if proxy_url is None:
-            current_proxy = get_network_settings(self.ui_config)
+            current_proxy = get_proxy(self.ui_config)
             if current_proxy:
                 self.out('Current Proxy: {0}'.format(current_proxy))
             else:
                 self.out('No proxy in use.')
         else:
             if proxy_url == 'default':
-                set_network_settings(self.ui_config, None)
+                set_proxy(self.ui_config, None)
                 self.out('Proxy settings reset.')
-                current_proxy = get_network_settings(self.ui_config)
+                current_proxy = get_proxy(self.ui_config)
                 if current_proxy:
                     self.out('Current Proxy: {0} (from http_proxy or https_proxy environment variables)'.format(current_proxy))
             else:
-                set_network_settings(self.ui_config, proxy_url)
+                set_proxy(self.ui_config, proxy_url)
                 self.out('Proxy was set to: {0}'.format(proxy_url))
             if self._daemon_already_running():
                 self.daemon_client.networkSettingsChanged()
+        return True
+
+    @exceptions_handled
+    def bwlimit(self, up_or_down, limit):
+        log.debug('CLIHandler.bwlimit()')
+        download_limit, upload_limit = get_bwlimits(self.ui_config)
+        if up_or_down is not None:
+            if up_or_down == 'up':
+                upload_limit = limit
+            elif up_or_down == 'down':
+                download_limit = limit
+            else:
+                self.out('First parameter must be \'up\' or \'down\'.')
+                return False
+            set_bwlimits(self.ui_config, download_limit, upload_limit)
+            if self._daemon_already_running():
+                self.daemon_client.networkSettingsChanged()
+        if upload_limit == 0:
+            self.out('Upload limit: N/A')
+        else:
+            self.out('Upload limit: {0} KB/s'.format(upload_limit))
+        if download_limit == 0:
+            self.out('Download limit: N/A')
+        else:
+            self.out('Download limit: {0} KB/s'.format(download_limit))
         return True
 
     @exceptions_handled

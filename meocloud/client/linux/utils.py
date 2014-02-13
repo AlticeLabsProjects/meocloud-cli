@@ -73,15 +73,30 @@ def get_own_dir(own_filename):
     return os.path.dirname(own_path)
 
 
-def get_network_settings(ui_config):
+def get_proxy(ui_config):
     proxy_url = ui_config.get('proxy_url')
     if proxy_url is None:
         proxy_url = os.getenv('http_proxy') or os.getenv('https_proxy')
     return proxy_url
 
 
-def set_network_settings(ui_config, proxy_url):
-    if proxy_url is None:
-        ui_config.unset('proxy_url')
+def set_proxy(ui_config, proxy_url):
+    set_config_value(ui_config, 'proxy_url', proxy_url)
+
+
+def get_bwlimits(ui_config):
+    download_limit = ui_config.get('download_limit') or 0
+    upload_limit = ui_config.get('upload_limit') or 0
+    return download_limit, upload_limit
+
+
+def set_bwlimits(ui_config, download_limit, upload_limit):
+    set_config_value(ui_config, 'download_limit', download_limit)
+    set_config_value(ui_config, 'upload_limit', upload_limit)
+
+
+def set_config_value(ui_config, key, value):
+    if value is None:
+        ui_config.unset(key)
     else:
-        ui_config.set('proxy_url', proxy_url)
+        ui_config.set(key, value)

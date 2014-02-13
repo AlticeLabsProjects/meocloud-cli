@@ -100,7 +100,7 @@ class UIListenerHandler(UI.Iface):
 
     def networkSettingsChanged(self):
         log.debug('UIListener.networkSettingsChanged() <<<<')
-        self.core_client.networkSettingsChanged(api.get_network_settings_for_core(self.ui_config))
+        self.core_client.networkSettingsChanged(api.get_network_settings(self.ui_config))
 
     def remoteDirectoryListing(self, path):
         log.debug('UIListener.requestRemoteDirectoryListing({0}) <<<<'.format(path))

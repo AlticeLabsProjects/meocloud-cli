@@ -2,7 +2,7 @@ import urlparse
 from meocloud.client.linux.protocol.daemon_core.ttypes import NetworkSettings, Account
 from meocloud.client.linux.settings import RC4_KEY
 from meocloud.client.linux.daemon import rc4
-from meocloud.client.linux.utils import get_network_settings
+from meocloud.client.linux.utils import get_proxy, get_bwlimits
 
 
 def unlink(core_client, ui_config):
@@ -20,9 +20,14 @@ def unlink(core_client, ui_config):
     return False
 
 
-def get_network_settings_for_core(ui_config):
+def get_network_settings(ui_config):
     network_settings = NetworkSettings()
-    proxy_url = get_network_settings(ui_config)
+
+    download_limit, upload_limit = get_bwlimits(ui_config)
+    network_settings.downloadBandwidth = download_limit * 1024  # KB/s to B/s
+    network_settings.uploadBandwidth = upload_limit * 1024  # KB/s to B/s
+
+    proxy_url = get_proxy(ui_config)
     if proxy_url:
         try:
             parsed = urlparse.urlparse(proxy_url)
@@ -37,6 +42,5 @@ def get_network_settings_for_core(ui_config):
                 network_settings.proxyPort = parsed.port or 3128
                 network_settings.proxyUser = parsed.user if hasattr(parsed, 'user') else ''
                 network_settings.proxyPassword = parsed.password if hasattr(parsed, 'password') else ''
-                network_settings.uploadBandwidth = 0
-                network_settings.downloadBandwidth = 0
+
     return network_settings
