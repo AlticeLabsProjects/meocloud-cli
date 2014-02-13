@@ -52,11 +52,7 @@ class Iface(object):
   def unlink(self):
     pass
 
-  def networkSettingsChanged(self, settings):
-    """
-    Parameters:
-     - settings
-    """
+  def networkSettingsChanged(self):
     pass
 
   def remoteDirectoryListing(self, path):
@@ -343,18 +339,13 @@ class Client(Iface):
       return result.success
     raise TApplicationException(TApplicationException.MISSING_RESULT, "unlink failed: unknown result");
 
-  def networkSettingsChanged(self, settings):
-    """
-    Parameters:
-     - settings
-    """
-    self.send_networkSettingsChanged(settings)
+  def networkSettingsChanged(self):
+    self.send_networkSettingsChanged()
     self.recv_networkSettingsChanged()
 
-  def send_networkSettingsChanged(self, settings):
+  def send_networkSettingsChanged(self):
     self._oprot.writeMessageBegin('networkSettingsChanged', TMessageType.CALL, self._seqid)
     args = networkSettingsChanged_args()
-    args.settings = settings
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.flush()
@@ -708,7 +699,7 @@ class Processor(Iface, TProcessor):
     args.read(iprot)
     iprot.readMessageEnd()
     result = networkSettingsChanged_result()
-    self._handler.networkSettingsChanged(args.settings)
+    self._handler.networkSettingsChanged()
     oprot.writeMessageBegin("networkSettingsChanged", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
@@ -1991,22 +1982,12 @@ class unlink_result(object):
 
 
 class networkSettingsChanged_args(object):
-  """
-  Attributes:
-   - settings
-  """
 
   __slots__ = [ 
-    'settings',
    ]
 
   thrift_spec = (
-    None, # 0
-    (1, TType.STRUCT, 'settings', (NetworkSettings, NetworkSettings.thrift_spec), None, ), # 1
   )
-
-  def __init__(self, settings=None,):
-    self.settings = settings
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -2017,12 +1998,6 @@ class networkSettingsChanged_args(object):
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
-      if fid == 1:
-        if ftype == TType.STRUCT:
-          self.settings = NetworkSettings()
-          self.settings.read(iprot)
-        else:
-          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -2033,10 +2008,6 @@ class networkSettingsChanged_args(object):
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('networkSettingsChanged_args')
-    if self.settings is not None:
-      oprot.writeFieldBegin('settings', TType.STRUCT, 1)
-      self.settings.write(oprot)
-      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 

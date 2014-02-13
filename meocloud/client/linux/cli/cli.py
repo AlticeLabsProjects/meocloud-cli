@@ -72,10 +72,10 @@ def main():
             parser.add_argument('-v', '--version', action='store_true', help='Print MEO Cloud\'s version')
 
             subparsers = parser.add_subparsers()
-            start_parser = subparsers.add_parser('start', help='Starts MEO Cloud daemon.')
+            start_parser = subparsers.add_parser('start', help='Starts MEO Cloud daemon')
             start_parser.set_defaults(func=cli_handler.start)
 
-            start_parser = subparsers.add_parser('stop', help='Stops MEO Cloud daemon.')
+            start_parser = subparsers.add_parser('stop', help='Stops MEO Cloud daemon')
             start_parser.set_defaults(func=cli_handler.stop)
 
             status_parser = subparsers.add_parser('status', help='Returns MEO Cloud\'s status')
@@ -98,6 +98,12 @@ def main():
             sync_parser = subparsers.add_parser('addsync', aliases=['as'], help='Reactivates synchronization of the given path (inside your MEO Cloud\'s folder)')
             sync_parser.add_argument('path')
             sync_parser.set_defaults(func=cli_handler.add_sync)
+
+            proxy_parser = subparsers.add_parser('proxy', help='Get or set current proxy')
+            proxy_parser.add_argument('proxy_url', nargs='?', default=None, help='If present, use this value as the proxy; if not present, show the current proxy. '
+                                                                                 'If the value is \'default\', use the system proxy '
+                                                                                 '(found in the http_proxy or https_proxy environment variables).')
+            proxy_parser.set_defaults(func=cli_handler.proxy)
 
             pause_parser = subparsers.add_parser('pause', help='Pause MEO Cloud')
             pause_parser.set_defaults(func=cli_handler.pause)

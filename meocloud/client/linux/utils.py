@@ -1,6 +1,7 @@
 import sys
 import os
 
+
 def test_already_running(pid_path, proc_name):
     try:
         with open(pid_path) as f:
@@ -70,3 +71,17 @@ def get_own_dir(own_filename):
     else:
         own_path = os.path.join(os.getcwd(), own_filename)
     return os.path.dirname(own_path)
+
+
+def get_network_settings(ui_config):
+    proxy_url = ui_config.get('proxy_url')
+    if proxy_url is None:
+        proxy_url = os.getenv('http_proxy') or os.getenv('https_proxy')
+    return proxy_url
+
+
+def set_network_settings(ui_config, proxy_url):
+    if proxy_url is None:
+        ui_config.unset('proxy_url')
+    else:
+        ui_config.set('proxy_url', proxy_url)

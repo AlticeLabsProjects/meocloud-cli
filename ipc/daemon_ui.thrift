@@ -51,16 +51,6 @@ struct RemoteDirectoryListingResult {
      3: list<string> listing,
 }
 
-struct NetworkSettings {
-    1: string proxyAddress,
-    2: string proxyType,
-    3: i32 proxyPort,
-    4: string proxyUser,
-    5: string proxyPassword,
-    6: i32 uploadBandwidth,
-    7: i32 downloadBandwidth,
-}
-
 struct Account {
     1: string clientID,
     2: string authKey,
@@ -80,7 +70,7 @@ service UI {
     void unpause();
     void shutdown();
     bool unlink();
-    void networkSettingsChanged( 1: NetworkSettings settings );
+    void networkSettingsChanged();
     RemoteDirectoryListingResult remoteDirectoryListing( 1: string path );
     list<string> ignoredDirectories();
     void setIgnoredDirectories( 1: list<string> paths );

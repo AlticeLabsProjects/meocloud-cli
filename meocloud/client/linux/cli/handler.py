@@ -15,7 +15,7 @@ from meocloud.client.linux.settings import (LOGGER_NAME, VERSION, CORE_BINARY_FI
                                             NOTIFICATIONS_LOG_PATH, PURGEMETA_PATH)
 from meocloud.client.linux.exceptions import (CoreOfflineException, AlreadyRunningException,
                                               ListenerConnectionFailedException, TimeoutException)
-from meocloud.client.linux.utils import test_already_running, tail, get_own_dir
+from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_network_settings, set_network_settings
 from meocloud.client.linux.decorators import retry, RetryFailed, TooManyRetries
 from meocloud.client.linux.db import UIConfig
 
@@ -296,7 +296,7 @@ class CLIHandler(object):
         except CoreOfflineException:
             self.out('It was not possible to establish a connection to the MEO Cloud servers.')
             self.out('Please check your connection, or if you\'re behind a proxy, '
-                     'set it using the http_proxy environment variable.')
+                     'set it using the http_proxy environment variable or the proxy command.')
             self.stop()
         except AlreadyRunningException:
             self.out('Failed to start MEO Cloud.')
@@ -521,6 +521,29 @@ class CLIHandler(object):
             else:
                 assert False
             return False
+        return True
+
+    @exceptions_handled
+    def proxy(self, proxy_url):
+        log.debug('CLIHandler.proxy()')
+        if proxy_url is None:
+            current_proxy = get_network_settings(self.ui_config)
+            if current_proxy:
+                self.out('Current Proxy: {0}'.format(current_proxy))
+            else:
+                self.out('No proxy in use.')
+        else:
+            if proxy_url == 'default':
+                set_network_settings(self.ui_config, None)
+                self.out('Proxy settings reset.')
+                current_proxy = get_network_settings(self.ui_config)
+                if current_proxy:
+                    self.out('Current Proxy: {0} (from http_proxy or https_proxy environment variables)'.format(current_proxy))
+            else:
+                set_network_settings(self.ui_config, proxy_url)
+                self.out('Proxy was set to: {0}'.format(proxy_url))
+            if self._daemon_already_running():
+                self.daemon_client.networkSettingsChanged()
         return True
 
     @exceptions_handled

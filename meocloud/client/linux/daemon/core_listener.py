@@ -1,11 +1,10 @@
 # Python standard library imports
 import os
 import gevent
-import urlparse
 
 # Thrift related imports
 from meocloud.client.linux.protocol.daemon_core import UI
-from meocloud.client.linux.protocol.daemon_core.ttypes import NetworkSettings, Account, State
+from meocloud.client.linux.protocol.daemon_core.ttypes import Account, State
 from meocloud.client.linux.thrift_utils import ThriftListener
 
 # Application specific imports
@@ -152,22 +151,4 @@ class CoreListenerHandler(UI.Iface):
 
     def networkSettings(self):
         log.debug('CoreListener.networkSettings() <<<<')
-        network_settings = NetworkSettings()
-        proxy_url = os.getenv('http_proxy') or os.getenv('https_proxy')
-        if proxy_url:
-            try:
-                parsed = urlparse.urlparse(proxy_url)
-            except Exception:
-                # Something went wrong while trying to parse proxy_url
-                # Ignore and just don't use any proxy
-                pass
-            else:
-                if parsed.hostname:
-                    network_settings.proxyAddress = parsed.hostname
-                    network_settings.proxyType = 'http'
-                    network_settings.proxyPort = parsed.port or 3128
-                    network_settings.proxyUser = parsed.user if hasattr(parsed, 'user') else ''
-                    network_settings.proxyPassword = parsed.password if hasattr(parsed, 'password') else ''
-                    network_settings.uploadBandwidth = 0
-                    network_settings.downloadBandwidth = 0
-        return network_settings
+        return api.get_network_settings_for_core(self.ui_config)

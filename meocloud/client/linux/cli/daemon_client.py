@@ -65,8 +65,8 @@ class DaemonClient(ThriftClient, UI.Iface):
         return self.client.unlink()
 
     @wrap_client_call()
-    def networkSettingsChanged(self, settings):
-        return self.client.networkSettingsChanged(settings)
+    def networkSettingsChanged(self):
+        return self.client.networkSettingsChanged()
 
     @wrap_client_call(timeout=CONNECTION_REQUIRED_TIMEOUT)
     def remoteDirectoryListing(self, path):
