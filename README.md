@@ -1,7 +1,7 @@
 meocloud-cli
 ============
 
-Source code for the MEO Cloud CLI
+Source code for the [MEO Cloud CLI](https://meocloud.pt/downloads)
 
 ## Getting Started
 
