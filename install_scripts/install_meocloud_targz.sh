@@ -27,7 +27,7 @@ else
 fi
 
 if command -v curl >/dev/null 2>&1; then
-  URL_FETCHER_COMMAND='curl'
+  URL_FETCHER_COMMAND='curl -f'
 else
   URL_FETCHER_COMMAND='wget -O-'
 fi
