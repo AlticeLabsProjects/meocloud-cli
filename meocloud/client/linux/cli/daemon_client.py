@@ -25,18 +25,6 @@ class DaemonClient(ThriftClient, UI.Iface):
 
     # I know you wanted to remove the parenthesis, but believe me, you don't
     @wrap_client_call()
-    def getCloudHome(self):
-        return self.client.getCloudHome()
-
-    @wrap_client_call()
-    def setCloudHome(self, cloudHome, forceCreate=False, forceMerge=False, forceRelative=False):
-        return self.client.setCloudHome(cloudHome, forceCreate, forceMerge, forceRelative)
-
-    @wrap_client_call()
-    def clearCloudHome(self):
-        return self.client.clearCloudHome()
-
-    @wrap_client_call()
     def startCore(self):
         return self.client.startCore()
 

@@ -276,7 +276,7 @@ class CLIHandler(object):
                 elif init_result == InitResult.AUTHORIZATION_REQUIRED:
                     self._handle_client_registration()
                 elif init_result == InitResult.ROOT_FOLDER_MISSING:
-                    cloud_home = self.daemon_client.getCloudHome()
+                    cloud_home = self.ui_config.get('cloud_home')
                     self.out('Could not find your MEO Cloud\'s folder in path "{0}".'.format(cloud_home))
                     self.ui_config.unset('cloud_home')
                     with open(PURGEMETA_PATH, 'w'):
