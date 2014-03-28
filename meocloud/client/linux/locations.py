@@ -6,6 +6,8 @@ from meocloud.client.linux.settings import CONFIG_PATH, UI_CONFIG_PATH
 def create_required_directories():
     create_required_directory(CONFIG_PATH)
     create_required_directory(UI_CONFIG_PATH)
+    os.chmod(CONFIG_PATH, 0700)
+    os.chmod(UI_CONFIG_PATH, 0700)
 
 
 def create_required_directory(directory):

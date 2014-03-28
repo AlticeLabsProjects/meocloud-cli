@@ -234,6 +234,7 @@ class CLIHandler(object):
 
             if must_create:
                 os.makedirs(cloud_home)
+                os.chmod(cloud_home, 0700)
 
         except OSError as os_err:
             if os_err.errno == errno.EACCES:
