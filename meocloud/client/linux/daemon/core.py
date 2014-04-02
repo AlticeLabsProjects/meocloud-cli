@@ -2,7 +2,7 @@ import os
 import sys
 import signal
 import gevent
-from subprocess import Popen
+from subprocess import Popen, check_output
 
 from meocloud.client.linux.settings import (CORE_LISTENER_SOCKET_ADDRESS, DAEMON_LISTENER_SOCKET_ADDRESS,
                                             LOGGER_NAME, CORE_BINARY_FILENAME, CORE_PID_PATH, CORE_WATCHDOG_PERIOD)
@@ -25,9 +25,16 @@ class Core(object):
         self.core_env = os.environ.copy()
         self.core_env['CLD_CORE_SOCKET_PATH'] = DAEMON_LISTENER_SOCKET_ADDRESS
         self.core_env['CLD_UI_SOCKET_PATH'] = CORE_LISTENER_SOCKET_ADDRESS
-        if sys.getfilesystemencoding().lower() != 'utf-8':
-            self.core_env['LC_ALL'] = 'C.UTF-8'
-
+        try:
+            if sys.getfilesystemencoding().lower() != 'utf-8':
+                if 'C.UTF-8' in check_output(['locale', '-a']).splitlines():
+                    log.info('Forcing locale to C.UTF-8')
+                    self.core_env['LC_ALL'] = 'C.UTF-8'
+                else:
+                    log.info('Forcing locale to en_US.utf8')
+                    self.core_env['LC_ALL'] = 'en_US.utf8'
+        except Exception:
+            log.exception('Something went wrong while trying to fix set the LC_ALL env variable')
 
     def start(self):
         """
