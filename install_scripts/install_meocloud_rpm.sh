@@ -48,6 +48,7 @@ sudo sh -s $* << "SCRIPT"
     else
         echo "ERROR: failed to verify integrity of the repository's GPG key!"
         echo "Please try again, and if it still does not work, please contact the support at https://meocloud.pt/help/"
+        exit 1
     fi
 
     echo
