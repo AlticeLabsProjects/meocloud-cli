@@ -1,8 +1,9 @@
-DEFAULT_TIMEOUT = 3
-CONNECTION_REQUIRED_TIMEOUT = 15
+DEFAULT_TIMEOUT = 300
+CONNECTION_REQUIRED_TIMEOUT = 1500
 # This takes as long as the user takes to authorize in the browser
 # so we must wait a long while...
-USER_ACTION_REQUIRED_TIMEOUT = 1200
+USER_ACTION_REQUIRED_TIMEOUT = 120000
+
 
 def increase_timeouts(increment):
     global DEFAULT_TIMEOUT
