@@ -294,6 +294,9 @@ class SyncStatus(object):
    - uploadETASecs
    - downloadETASecs
    - pendingIndexes
+   - downloadingPath
+   - uploadingPath
+   - indexingPath
   """
 
   __slots__ = [ 
@@ -304,6 +307,9 @@ class SyncStatus(object):
     'uploadETASecs',
     'downloadETASecs',
     'pendingIndexes',
+    'downloadingPath',
+    'uploadingPath',
+    'indexingPath',
    ]
 
   thrift_spec = (
@@ -315,9 +321,12 @@ class SyncStatus(object):
     (5, TType.I32, 'uploadETASecs', None, None, ), # 5
     (6, TType.I32, 'downloadETASecs', None, None, ), # 6
     (7, TType.I32, 'pendingIndexes', None, None, ), # 7
+    (8, TType.STRING, 'downloadingPath', None, None, ), # 8
+    (9, TType.STRING, 'uploadingPath', None, None, ), # 9
+    (10, TType.STRING, 'indexingPath', None, None, ), # 10
   )
 
-  def __init__(self, uploadRate=None, downloadRate=None, pendingUploads=None, pendingDownloads=None, uploadETASecs=None, downloadETASecs=None, pendingIndexes=None,):
+  def __init__(self, uploadRate=None, downloadRate=None, pendingUploads=None, pendingDownloads=None, uploadETASecs=None, downloadETASecs=None, pendingIndexes=None, downloadingPath=None, uploadingPath=None, indexingPath=None,):
     self.uploadRate = uploadRate
     self.downloadRate = downloadRate
     self.pendingUploads = pendingUploads
@@ -325,6 +334,9 @@ class SyncStatus(object):
     self.uploadETASecs = uploadETASecs
     self.downloadETASecs = downloadETASecs
     self.pendingIndexes = pendingIndexes
+    self.downloadingPath = downloadingPath
+    self.uploadingPath = uploadingPath
+    self.indexingPath = indexingPath
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -370,6 +382,21 @@ class SyncStatus(object):
           self.pendingIndexes = iprot.readI32();
         else:
           iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.STRING:
+          self.downloadingPath = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRING:
+          self.uploadingPath = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.STRING:
+          self.indexingPath = iprot.readString();
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -407,6 +434,18 @@ class SyncStatus(object):
     if self.pendingIndexes is not None:
       oprot.writeFieldBegin('pendingIndexes', TType.I32, 7)
       oprot.writeI32(self.pendingIndexes)
+      oprot.writeFieldEnd()
+    if self.downloadingPath is not None:
+      oprot.writeFieldBegin('downloadingPath', TType.STRING, 8)
+      oprot.writeString(self.downloadingPath)
+      oprot.writeFieldEnd()
+    if self.uploadingPath is not None:
+      oprot.writeFieldBegin('uploadingPath', TType.STRING, 9)
+      oprot.writeString(self.uploadingPath)
+      oprot.writeFieldEnd()
+    if self.indexingPath is not None:
+      oprot.writeFieldBegin('indexingPath', TType.STRING, 10)
+      oprot.writeString(self.indexingPath)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

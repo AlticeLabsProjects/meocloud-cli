@@ -41,6 +41,9 @@ struct SyncStatus {
 	5: i32 uploadETASecs,
 	6: i32 downloadETASecs,
 	7: i32 pendingIndexes,
+	8: string downloadingPath,
+	9: string uploadingPath,
+	10: string indexingPath,
 }
 
 struct Status {
@@ -99,6 +102,7 @@ service Core {
 	string webLoginURL();
 	bool ping();
 	string version();
+	void log( 1: NotificationLevel level, 2: string msg );
 }
 
 service UI {
