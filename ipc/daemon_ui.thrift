@@ -30,6 +30,9 @@ struct SyncStatus {
     6: i32 downloadETASecs,
     7: i32 pendingIndexes,
     8: i32 syncCode,
+    9: string downloadingPath,
+    10: string uploadingPath,
+    11: string indexingPath,
 }
 
 struct Status {
