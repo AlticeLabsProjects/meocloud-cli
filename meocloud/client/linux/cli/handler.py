@@ -10,9 +10,18 @@ import os
 
 from meocloud.client.linux.protocol.daemon_ui.ttypes import State, InitResult
 
-from meocloud.client.linux.settings import (LOGGER_NAME, VERSION, CORE_BINARY_FILENAME, DAEMON_PID_PATH,
-                                            DAEMON_BINARY_FILENAME, CORE_PID_PATH, CLOUD_HOME_DEFAULT_PATH,
-                                            NOTIFICATIONS_LOG_PATH, PURGEMETA_PATH)
+from meocloud.client.linux.settings import (
+    BIN_DIR,
+    CLOUD_HOME_DEFAULT_PATH,
+    CORE_BINARY_FILENAME,
+    CORE_PID_PATH,
+    DAEMON_BINARY_FILENAME,
+    DAEMON_PID_PATH,
+    LOGGER_NAME,
+    NOTIFICATIONS_LOG_PATH,
+    PURGEMETA_PATH,
+    VERSION,
+    )
 from meocloud.client.linux.exceptions import (CoreOfflineException, AlreadyRunningException,
                                               ListenerConnectionFailedException, TimeoutException)
 from meocloud.client.linux.utils import test_already_running, tail, get_own_dir, get_proxy, set_proxy, get_ratelimits, set_ratelimits
@@ -135,9 +144,7 @@ class CLIHandler(object):
                 self.stop(quiet=True)
         self._handle_dying_message()
         log.info('Starting daemon')
-        # assumes daemon binary is in same dir as cli
-        daemon_binary_dir = get_own_dir(__file__)
-        daemon_binary_path = os.path.join(daemon_binary_dir, DAEMON_BINARY_FILENAME)
+        daemon_binary_path = os.path.join(sys.prefix, BIN_DIR, DAEMON_BINARY_FILENAME)
         self.process = Popen([daemon_binary_path], preexec_fn=lambda: os.setpgrp())
         # Try pinging daemon to make sure the listener is on
         self.daemon_client.attemptFirstConnection()

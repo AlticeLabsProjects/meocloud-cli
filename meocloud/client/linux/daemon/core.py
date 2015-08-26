@@ -4,8 +4,17 @@ import signal
 import gevent
 from subprocess import Popen, check_output
 
-from meocloud.client.linux.settings import (CORE_LISTENER_SOCKET_ADDRESS, DAEMON_LISTENER_SOCKET_ADDRESS,
-                                            LOGGER_NAME, CORE_BINARY_FILENAME, CORE_PID_PATH, CORE_WATCHDOG_PERIOD)
+
+from meocloud.client.linux.settings import (
+    CORE_BINARY_FILENAME,
+    CORE_DIR,
+    CORE_LISTENER_SOCKET_ADDRESS,
+    CORE_PID_PATH,
+    CORE_WATCHDOG_PERIOD,
+    DAEMON_LISTENER_SOCKET_ADDRESS,
+    LOGGER_NAME,
+    MEOCLOUD_PREFIX,
+    )
 from meocloud.client.linux.utils import test_already_running, get_own_dir
 from meocloud.client.linux.daemon.communication import Events
 
@@ -19,10 +28,7 @@ class Core(object):
         super(Core, self).__init__()
         self.core_client = core_client
         self.process = None
-        # core binary should be in ../core. Typically this happens since the cli
-        # will be in /opt/meocloud/cli while the core will be in /opt/meocloud/core
-        core_binary_dir = os.path.normpath(os.path.join(get_own_dir(__file__), '..', 'core'))
-        self.core_binary_path = os.path.join(core_binary_dir, CORE_BINARY_FILENAME)
+        self.core_binary_path = os.path.join(MEOCLOUD_PREFIX, CORE_DIR, CORE_BINARY_FILENAME)
         self.core_env = os.environ.copy()
         self.core_env['CLD_CORE_SOCKET_PATH'] = DAEMON_LISTENER_SOCKET_ADDRESS
         self.core_env['CLD_UI_SOCKET_PATH'] = CORE_LISTENER_SOCKET_ADDRESS
