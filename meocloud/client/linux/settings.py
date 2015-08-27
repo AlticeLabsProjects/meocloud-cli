@@ -16,6 +16,10 @@ if DEV_MODE:
 # TODO Find a way to set this during the build process
 BETA_MODE = True
 
+MEOCLOUD_PREFIX = '/opt/meocloud'
+CORE_DIR = 'core'
+BIN_DIR = 'bin'
+
 CORE_BINARY_FILENAME = 'meocloudd'
 CORE_LOCK_PATH = os.path.join(CONFIG_PATH, 'daemon.lock')
 CORE_PID_PATH = os.path.join(CONFIG_PATH, 'daemon.pid')
@@ -36,7 +40,7 @@ LOGGER_NAME = 'meocloud_ui'
 LOG_PATH = os.path.join(UI_CONFIG_PATH, 'meocloud_ui.log')
 NOTIFICATIONS_LOG_PATH = os.path.join(UI_CONFIG_PATH, 'user_notifications.log')
 
-DAEMON_BINARY_FILENAME = 'daemon'
+DAEMON_BINARY_FILENAME = 'meocloud-cli-daemon'
 DAEMON_LOCK_PATH = os.path.join(UI_CONFIG_PATH, 'ui.lock')
 DAEMON_PID_PATH = os.path.join(UI_CONFIG_PATH, 'ui.pid')
 
@@ -51,8 +55,7 @@ DEFAULT_NOTIFS_TAIL_LINES = 10
 
 def _get_current_version():
     if not DEV_MODE:
-        own_dir = get_own_dir(__file__)
-        version_path = os.path.join(own_dir, 'VERSION')
+        version_path = os.path.join(MEOCLOUD_PREFIX, 'gui/meocloud_gui/VERSION')
         with open(version_path) as f:
             current_version = f.read().strip()
     else:
